@@ -1,0 +1,255 @@
+{
+  "configs": [
+    {
+      "server": "104.148.38.20",
+      "server_port": 8989,
+      "password": "novioleo",
+      "method": "aes-256-cfb",
+      "remarks": "",
+      "auth": false
+    }
+  ],
+  "strategy": null,
+  "index": 0,
+  "global": true,
+  "enabled": true,
+  "shareOverLan": false,
+  "isDefault": false,
+  "localPort": 1080,
+  "pacUrl": null,
+  "useOnlinePac": false,
+  "availabilityStatistics": false,
+  "autoCheckUpdate": true,
+  "isVerboseLogging": false,
+  "logViewer": {
+    "fontName": "Consolas",
+    "fontSize": 8.0,
+    "bgColor": "black",
+    "textColor": "white",
+    "topMost": false,
+    "wrapText": false,
+    "toolbarShown": false,
+    "width": 600,
+    "height": 400,
+    "top": 640,
+    "left": 1320,
+    "maximized": true
+  },
+  "proxy": {
+    "useProxy": false,
+    "proxyType": 0,
+    "proxyServer": "",
+    "proxyPort": 0
+  },
+  "hotkey": {
+    "SwitchSystemProxy": "",
+    "ChangeToPac": "",
+    "ChangeToGlobal": "",
+    "SwitchAllowLan": "",
+    "ShowLogs": "",
+    "ServerMoveUp": "",
+    "ServerMoveDown": ""
+  }
+}
+
+---上面是一个shadowsocks---
+
+1、安装Git
+	
+2、测试
+	-》crate file 
+	-》git add fileName
+	-》git commit -m "comments"
+	-》change file
+		-》git status 
+		-》git diff
+		-》git add fileName
+		-》git commit -m "testChange"
+		-》git status
+		
+3、回退
+	-》版本回退
+		-》git log || git log --pretty=oneline
+		-》回退：git reset --hard HEAD^ 
+			【
+				HEAD^^
+				HEAD~100
+				窗口未关闭：
+					git reset --hard 4c40c939953(用git log 找到相应的coman id，输入前几位就可以)
+				窗口已关闭：
+					git reflog
+					git reset --hard 对应版本前几位
+			】
+	-》工作区和暂存区
+		工作区：working directory
+			
+		版本库：Repository
+			-》工作区有一个隐藏目录.git，这个不算工作区，而是Git的版本库。Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。
+			
+			-》把文件往Git版本库里添加的时候，是分两步执行的：
+				-》第一步是用git add把文件添加进去，实际上就是把文件修改添加到暂存区；
+				-》第二步是用git commit提交更改，实际上就是把暂存区的所有内容提交到当前分支。
+		
+	-》管理修改
+		-》Git管理的是修改，而不是文件。每次对文件的修改如果不提交到stage(暂存区)，直接git commit不会修改文件的内容。
+		
+		-》用git diff HEAD -- readme.txt命令可以查看工作区和版本库里面最新版本的区别
+		
+	-》撤销修改
+		-》命令git checkout -- readme.txt意思就是，把readme.txt文件在工作区的修改全部撤销，这里有两种情况：
+			-》一种是readme.txt自修改后还没有被放到暂存区，现在，撤销修改就回到和版本库一模一样的状态；
+			-》一种是readme.txt已经添加到暂存区后，又作了修改，现在，撤销修改就回到添加到暂存区后的状态。
+
+		总之，就是让这个文件回到最近一次git commit或git add时的状态。
+		
+	-》删除文件
+		-》create file testrm.txt then dellete it using rm in shell.
+		-》git status(git发现工作区和版本库不一致了，可用git status命令查看哪些文件被删除了)
+		-》这时可以有两种操作：
+			-》删除：
+				-》git rm fileName
+				-》git commit
+			-》删错了恢复(版本库中还有)：
+				-》git checkout -- fileName
+	
+	命令git rm用于删除一个文件。如果一个文件已经被提交到版本库，那么你永远不用担心误删，但是要小心，你只能恢复文件到最新版本，你会丢失最近一次提交后你修改的内容。
+		
+	
+#4、错误测试
+#	-》回退删除测试
+	
+4、远程仓库
+	-》用户主目录下是否有.ssh 目录 & id_rsa 和 id_rsa.pub 文件。
+		-》没有
+			-》git bash 
+				-》创建ssh key：ssh-keygen -t rsa -C "email"
+				
+		-》有
+			-》跳过本步
+		
+	-》添加/关联 远程仓库 —— 先有本地库，关联远程库
+		-》Web端，创建一个新repository
+		-》本地仓库下执行：
+			-》关联远程仓库：
+				git remote add origion git@github.com:WujieRen/WorkspaceGithub.git
+			-》把本地内容推送到远程仓库：
+				git push -u origion master
+			
+			把本地库的内容推送到远程，用git push命令，实际上是把当前分支master推送到远程。
+			由于远程库是空的，我们第一次推送master分支时，加上了-u参数，Git不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令。
+
+			推送成功后，可以立刻在GitHub页面中看到远程库的内容已经和本地一模一样。
+		
+	小结：分布式版本系统的最大好处之一是在本地工作完全不需要考虑远程库的存在，也就是有没有联网都可以正常工作，而SVN在没有联网的时候是拒绝干活的！当有网络的时候，再把本地提交推送一下就完成了同步，真是太方便了！
+	
+	
+	-》从远程库克隆
+		-》git clone masterURL
+
+5、分支管理
+
+	-》创建与合并分支
+	
+		-》理论：
+			在版本回退里，已经知道，每次提交，Git都把它们串成一条时间线，这条时间线就是一个分支。截止到目前，只有一条时间线，在Git里，这个分支叫主分支，即master分支。HEAD严格来说不是指向提交，而是指向master，master才是指向提交的，所以，HEAD指向的就是当前分支
+		
+			每次提交，master分支都会向前移动一步，这样，随着不断提交，master分支的线也越来越长。
+			
+			当创建新的分支，例如dev时，Git会一个指针叫dev，指向master相同的提交，再把HEAD指向dev，就表示当前分支在dev。
+			
+			不过，从现在开始，对工作区的修改和提交就是针对dev分支了，比如新提交一次后，dev指针往前移动一步，而master指针不变
+			
+			假如我们在dev上的工作完成了，就可以把dev合并到master上。Git怎么合并呢？最简单的方法，就是直接把master指向dev的当前提交，就完成了合并。
+			
+			合并完分支后，甚至可以删除dev分支。删除dev分支就是把dev指针给删掉，删掉后，就剩下了一条master分支。
+
+		-》实践：
+			
+			-》创建并切换分支：git checkout -b dev
+				【
+					git checkout命令加上-b参数表示创建并切换，相当于以下两条命令
+						git branch dev
+						git checkout dev
+				】
+		
+			-》然后git branch 查看当前分支。
+				现在就可以在dev分支上正常提交修改了。
+			
+			-》dev工作完成后，就可以切换回master：
+				git checkout master
+			
+			-》把dev分支结果合并到master上(这里注意是将指定分支合并到当前分支，所以如果要合并到master，记得先切换到master)：
+				git merge dev
+				
+			-》合并完成后，即可删除dev分支
+				git branch -d dev
+				
+			-》查看分支发现只剩master了：
+				git branch
+			
+		因为创建、合并和删除分支非常快，所以Git鼓励你使用分支完成某个任务，合并后再删掉分支，这和直接在master分支上工作效果是一样的，但过程更安全
+				
+		
+	-》解决冲突
+	
+		-》当Git无法自动合并分支时，就必须首先解决冲突。解决冲突后，再提交，合并完成。
+		
+		-》用git log --graph命令可以看到分支合并图。
+		
+		-》存在冲突的一种情况：
+			当同时在两个分支上操作，都git commit时，如果内容不同，就会有冲突。
+	
+	-》分支管理策略
+		-》通常，合并分支时，如果可能，Git会用Fastforward模式，但这种模式下，删除分支后，会丢掉分支信息。
+		
+		-》如果要强制禁用Fast forward模式，Git就会在merge时生成一个新的commit，这样，从分支历史上就可以看出分支信息。
+	
+		-》https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/0013758410364457b9e3d821f4244beb0fd69c61a185ae0000
+	
+	-》Bug分支
+		软件开发中，bug就像家常便饭一样。有了bug就需要修复，在Git中，由于分支是如此的强大，所以，每个bug都可以通过一个新的临时分支来修复，修复后，合并分支，然后将临时分支删除。
+		
+		Git还提供了一个stash功能，可以把当前工作现场“储藏”起来，等以后恢复现场后继续工作。
+		
+		
+		
+<<<<<<< Updated upstream
+		
+		
+=======
+>>>>>>> Stashed changes
+	-》Feature分支
+	
+	-》多人协作
+	
+6、标签管理
+
+	-》使用GitHub
+	
+	-》使用码云
+	
+7、自定义Git
+	
+	-》期末总结
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

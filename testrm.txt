@@ -1,0 +1,7 @@
+test rm
+test creating & merging branch with testrm.txt
+<<<<<<< Updated upstream
+test Bug Branch
+=======
+test Bug branch
+>>>>>>> Stashed changes
